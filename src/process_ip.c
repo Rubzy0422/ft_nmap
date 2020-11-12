@@ -6,7 +6,7 @@
 /*   By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 11:14:17 by rcoetzer          #+#    #+#             */
-/*   Updated: 2020/11/03 18:32:25 by rcoetzer         ###   ########.fr       */
+/*   Updated: 2020/11/07 15:50:07 by rcoetzer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void optimize_hosts(t_env *env)
 {
-	env->hosts = realloc(env->hosts, sizeof(struct hostent *) * env->hostcnt);
+	env->params.hosts = realloc(env->params.hosts, sizeof(struct sockaddr_in) *
+	env->params.hostcnt);
 }
 
 void process_ip(char **argv, int argc, int i, t_env *env)

@@ -1,16 +1,17 @@
 # **************************************************************************** #
-#																			  #
-#														 :::	  ::::::::	#
-#	Makefile										   :+:	  :+:	:+:	#
-#													 +:+ +:+		 +:+	  #
-#	By: rcoetzer <rcoetzer@student.wethinkcode.	+#+  +:+	   +#+		 #
-#												 +#+#+#+#+#+   +#+			#
-#	Created: 2020/10/15 18:06:44 by rcoetzer		  #+#	#+#			  #
-#	Updated: 2020/10/17 11:00:16 by rcoetzer		 ###   ########.fr		#
-#																			  #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/11/04 12:15:51 by rcoetzer          #+#    #+#              #
+#    Updated: 2020/11/12 09:52:18 by marvin           ###   ########.fr        #
+#                                                                              #
 # **************************************************************************** #
 
-#  Needed
+ARGS		=	--file TODO --ports 0-10 --speedup 4
+VALGRINDARGS = --leak-check=full
 
 NAME		=	ft_nmap
 CC			= 	gcc
@@ -18,6 +19,7 @@ FLAGS		=	-Wall -Wextra -g
 
 SRCDIR		=	src/
 OBJDIR		=	obj/
+REMOVE		= rm -rf
 
 SRCFILES	=	main.c\
 				ft_error.c\
@@ -35,12 +37,26 @@ SRCFILES	=	main.c\
 				hostinfo.c\
 				defaults.c\
 				display_header.c\
-
+				create_threads.c\
+				create_socket.c\
+				init_tcp.c\
+				init_udp.c\
+				csum.c\
+				send_ack.c\
+				send_fin.c\
+				send_null.c\
+				send_syn.c\
+				send_udp.c\
+				send_xmas.c\
+				get_own_ip.c\
+				recv_pack.c\
+				ft_free.c
 
 SRCS		=	$(addprefix $(SRCDIR), $(SRCFILES))
 OBJS		=	$(addprefix $(OBJDIR), $(SRCFILES:.c=.o))
 
 LIBFT_DIR	=	./libft/
+
 LIBFT_LIB	=	$(LIBFT_DIR)libft.a
 LIBS		=	$(LIBFT_LIB) -lpthread -lpcap -lm
 INCS		=	-I inc -I $(LIBFT_DIR)/includes
@@ -60,16 +76,16 @@ Reset = \u001b[0m
 
 all: $(NAME)
 
-$(LIBFT_LIB): $(LIBFT_DIR)
-	@make -C $(LIBFT_DIR)
-
-$(LIBFT_DIR):
-	sudo apt-get install libpcap-dev
-	@git clone http://github.com/rubzy0422/libft.git 
-
 $(NAME): $(LIBFT_LIB) $(OBJDIR) $(OBJS)
 	@$(CC) -lm $(FLAGS) -o $(NAME) $(OBJS) $(LIBS)
 	@echo COMPILED $(NAME)
+
+$(LIBFT_LIB): #$(LIBFT_DIR)
+	@make -C $(LIBFT_DIR)
+
+$(LIBFT_DIR):
+	# sudo apt-get install libpcap-dev
+	@git clone http://github.com/rubzy0422/libft.git 
 
 $(OBJDIR):
 	@mkdir -p $(OBJDIR)
@@ -81,12 +97,14 @@ $(OBJDIR)%.o : $(SRCDIR)%.c | $(OBJDIR)
 
 clean:
 	@make -C $(LIBFT_DIR) clean
-	@rm -rf $(OBJDIR)
+	@$(REMOVE) $(OBJDIR)
 
 fclean:		clean
 	@make -C $(LIBFT_DIR) fclean
-	@rm -rf $(NAME)
+	@$(REMOVE) $(NAME)
 
 re:	fclean all
 
+test: all 
+	sudo valgrind $(VALGRINDARGS) ./$(NAME) $(ARGS)
 .PHONY: all clean fclean re

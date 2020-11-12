@@ -6,7 +6,7 @@
 /*   By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/22 14:56:03 by rcoetzer          #+#    #+#             */
-/*   Updated: 2020/11/03 18:19:54 by rcoetzer         ###   ########.fr       */
+/*   Updated: 2020/11/07 14:55:24 by rcoetzer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,13 @@ char	*ft_strtolower(char *str)
 	return str;
 }
 
-int in_arr(int val, uint8_t *arr)
+int in_arr(int val, uint8_t *arr, int arrlen)
 {
 	uint8_t i;
-	for(i = 0; i < sizeof(arr) / (uint8_t)sizeof(arr[0]); i++)
+
+	if (!arr)
+		return 0;
+	for(i = 0; i < arrlen; i++)
 	{
 		if(arr[i] == val)
 		return 1;
