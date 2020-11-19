@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hostinfo.c                                         :+:      :+:    :+:   */
+/*   lst_func.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/17 12:24:12 by rcoetzer          #+#    #+#             */
-/*   Updated: 2020/11/07 15:10:04 by rcoetzer         ###   ########.fr       */
+/*   Created: 2020/11/12 20:21:44 by rcoetzer          #+#    #+#             */
+/*   Updated: 2020/11/12 21:33:33 by rcoetzer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <ft_nmap.h>
 
-int		get_host(t_env *env, char *hostname)
+void ft_lstappend(t_list *lst, t_list *new)
 {
-	struct hostent *host = gethostbyname(hostname);
-	if (!host)
+	if (!lst)
+		return ;
+	while (lst->next)
+		lst = lst->next;
+	lst->next = new;
+}
+
+t_list *ft_lstpop(t_list **lst)
+{
+	t_list * tmp = *lst;
+	if (tmp)
 	{
-		herror(hostname);
-		printf("Failed to resolve \"%s\".\n", hostname);
-		ft_free(hostname);
-		return 0;
+		*lst = tmp->next;
 	}
-	else
-	{
-		ft_memcpy(&env->params.hosts[env->params.hostcnt].sin_addr, host->h_addr_list[0], host->h_length);
-		ft_free(hostname);
-		env->params.hostcnt++;
-	}
-	return 1;
+	return tmp;
 }

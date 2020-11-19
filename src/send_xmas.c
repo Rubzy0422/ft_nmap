@@ -6,7 +6,7 @@
 /*   By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/04 14:15:28 by rcoetzer          #+#    #+#             */
-/*   Updated: 2020/11/05 12:16:17 by rcoetzer         ###   ########.fr       */
+/*   Updated: 2020/11/14 16:30:50 by rcoetzer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void send_xmas(struct sockaddr_in sin, in_addr_t source_ip, int sock, int portnu
 	flags.urg = 1;
 	flags.psh = 1;
 	sin.sin_port = htons(portnum);
+	sin.sin_family = AF_INET;
 	init_tcp(tcp_pack, sin, source_ip, XMAS_PORT, portnum, flags);
 	send = sendto(sock, tcp_pack->datagram, tcp_pack->iph->tot_len, 0,
 		(struct sockaddr *)&sin, sizeof(sin));

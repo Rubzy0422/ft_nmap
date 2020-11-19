@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/04 12:15:51 by rcoetzer          #+#    #+#              #
-#    Updated: 2020/11/12 09:52:18 by marvin           ###   ########.fr        #
+#    Updated: 2020/11/19 11:40:12 by rcoetzer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,38 +19,43 @@ FLAGS		=	-Wall -Wextra -g
 
 SRCDIR		=	src/
 OBJDIR		=	obj/
-REMOVE		= rm -rf
+REMOVE		=	rm -rf
 
-SRCFILES	=	main.c\
-				ft_error.c\
-				create_env.c\
-				display_help.c\
-				parse_args.c\
-				utils.c\
-				arg_err.c\
+SRCFILES	=	arg_err.c\
 				binary_int.c\
-				process_port.c\
-				process_scan.c\
-				process_file.c\
-				process_speedup.c\
-				process_ip.c\
-				hostinfo.c\
+				create_env.c\
+				csum.c\
 				defaults.c\
 				display_header.c\
-				create_threads.c\
-				create_socket.c\
+				display_help.c\
+				ft_error.c\
+				ft_free.c\
+				get_host.c\
+				get_own_ip.c\
+				init_scanlst.c\
 				init_tcp.c\
 				init_udp.c\
-				csum.c\
+				lst_func.c\
+				main.c\
+				packet_handler.c\
+				parse_args.c\
+				process_file.c\
+				process_ip.c\
+				process_port.c\
+				process_ports.c\
+				process_scan.c\
+				process_speedup.c\
 				send_ack.c\
 				send_fin.c\
 				send_null.c\
 				send_syn.c\
 				send_udp.c\
 				send_xmas.c\
-				get_own_ip.c\
-				recv_pack.c\
-				ft_free.c
+				utils.c\
+				run_scans.c\
+				send_recv_pack.c\
+				display_data.c\
+				time.c
 
 SRCS		=	$(addprefix $(SRCDIR), $(SRCFILES))
 OBJS		=	$(addprefix $(OBJDIR), $(SRCFILES:.c=.o))
@@ -58,8 +63,8 @@ OBJS		=	$(addprefix $(OBJDIR), $(SRCFILES:.c=.o))
 LIBFT_DIR	=	./libft/
 
 LIBFT_LIB	=	$(LIBFT_DIR)libft.a
-LIBS		=	$(LIBFT_LIB) -lpthread -lpcap -lm
-INCS		=	-I inc -I $(LIBFT_DIR)/includes
+LIBS		=	$(LIBFT_LIB) -lpthread -lpcap
+INCS		=	-I inc -I $(LIBFT_DIR)/includes -I libpcap
 
 ############################################## COLORS 
 
@@ -80,11 +85,11 @@ $(NAME): $(LIBFT_LIB) $(OBJDIR) $(OBJS)
 	@$(CC) -lm $(FLAGS) -o $(NAME) $(OBJS) $(LIBS)
 	@echo COMPILED $(NAME)
 
-$(LIBFT_LIB): #$(LIBFT_DIR)
+$(LIBFT_LIB): $(LIBFT_DIR)
 	@make -C $(LIBFT_DIR)
 
 $(LIBFT_DIR):
-	# sudo apt-get install libpcap-dev
+	sudo apt-get install libpcap-dev
 	@git clone http://github.com/rubzy0422/libft.git 
 
 $(OBJDIR):
@@ -107,4 +112,10 @@ re:	fclean all
 
 test: all 
 	sudo valgrind $(VALGRINDARGS) ./$(NAME) $(ARGS)
+
+# Reason: 1024 ports will do 6 scans and will time out 1 scan at around 1 second
+# thus you will wait (1024 *6) seconds .. thus (6144 s /102.4 minutes / 1.70 Hours)
+
+test1: all 
+	sudo ./$(NAME) --speedup 250 
 .PHONY: all clean fclean re

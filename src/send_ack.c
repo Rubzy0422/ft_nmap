@@ -6,7 +6,7 @@
 /*   By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/04 14:14:16 by rcoetzer          #+#    #+#             */
-/*   Updated: 2020/11/05 12:15:54 by rcoetzer         ###   ########.fr       */
+/*   Updated: 2020/11/14 16:31:13 by rcoetzer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	send_ack(struct sockaddr_in sin, in_addr_t source_ip, int sock, int portnum
 	ft_bzero(tcp_pack, sizeof(tcp_pack));
 	flags.ack = 1;
 	sin.sin_port = htons(portnum);
+	sin.sin_family =AF_INET;
 	init_tcp(tcp_pack, sin, source_ip, ACK_PORT, portnum, flags);
 	send = sendto(sock, tcp_pack->datagram, tcp_pack->iph->tot_len, 0,
 		(struct sockaddr *)&sin, sizeof(sin));

@@ -6,7 +6,7 @@
 /*   By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 11:17:23 by rcoetzer          #+#    #+#             */
-/*   Updated: 2020/11/03 19:05:39 by rcoetzer         ###   ########.fr       */
+/*   Updated: 2020/11/19 10:59:06 by rcoetzer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void process_speedup(char **argv, int argc, int i, t_env *env)
 		arg_err("--speedup");
 
 	threadcount = ft_atoi(threads);
-	if (!threadcount || threadcount <= 0 || threadcount > T_MAX)
+	if (!threadcount || threadcount <= 0 || threadcount > THREADMAX)
 		ft_error("Error, invalid thread amount provided use 1-250", 0);
 	env->params.thread_cnt = threadcount;
 }

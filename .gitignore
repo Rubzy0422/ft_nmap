@@ -1,6 +1,8 @@
 /obj 
 /libft
 ft_nmap
+/.vsode
+/.vs
 # Prerequisites
 *.d
 

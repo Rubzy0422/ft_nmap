@@ -6,7 +6,7 @@
 /*   By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 18:51:15 by rcoetzer          #+#    #+#             */
-/*   Updated: 2020/11/05 22:27:55 by rcoetzer         ###   ########.fr       */
+/*   Updated: 2020/11/12 22:02:59 by rcoetzer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 void display_scans(uint8_t scan_list[SCAN_MAX], uint8_t scancnt)
 {
+	uint8_t i;
+
+	i = 0;
 	printf("SCAN TODO:\t");
-	for (uint8_t i = 0; i < scancnt; ++i)
+	while(i < scancnt)
 	{
 		if (scan_list[i] == SYN_FLAG)
 			printf("SYN ");
@@ -29,6 +32,7 @@ void display_scans(uint8_t scan_list[SCAN_MAX], uint8_t scancnt)
 			printf("XMAS ");
 		if (scan_list[i] == UDP_FLAG)
 			printf("UDP ");
+		i++;
 	}
 	printf("\n");
 }

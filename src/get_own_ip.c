@@ -6,7 +6,7 @@
 /*   By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/04 15:35:29 by rcoetzer          #+#    #+#             */
-/*   Updated: 2020/11/04 15:45:40 by rcoetzer         ###   ########.fr       */
+/*   Updated: 2020/11/19 11:03:47 by rcoetzer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ in_addr_t	get_own_ip()
 		}
 		else if (ipset & 2)
 		{
-			fprintf(stderr, RED "ft_nmap: ip network collision; passing\n" RESET);
+			fprintf(stderr, "ft_nmap: ip network collision!\n");
 		}
 		else
 		{
