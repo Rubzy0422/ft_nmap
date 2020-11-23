@@ -1,6 +1,9 @@
 #ifndef FT_NMAP_H
 # define FT_NMAP_H
 
+#define _GNU_SOURCE
+#define _OPEN_THREADS 
+
 # include <stdio.h>
 # include <arpa/inet.h>
 # include <string.h>
@@ -9,6 +12,7 @@
 # include <net/ethernet.h>
 # include <ctype.h>
 # include <stdint.h>
+# include <netinet/ip.h>
 # include <netinet/ip_icmp.h>
 # include <netinet/udp.h>
 # include <netinet/tcp.h>
@@ -24,14 +28,11 @@
 # include <sys/select.h>
 # include <poll.h>
 
-#define _GNU_SOURCE
-#define _OPEN_THREADS //TBH I CAN't REMEMBER WHY
-
 #define DEBUG_ICMP			0
 #define DEBUG_TCP			0
 #define DEBUG_UDP			0
 #define RETRIES				5
-#define MSTIMEOUT			1000	//1 sec timeout
+#define MSTIMEOUT			1000
 #define ETHER_HEAD_LEN		14
 #define THREADMAX			250
 #define SCAN_MAX			6
@@ -48,7 +49,6 @@
 #define	FIN_FLAG			1 << 3
 #define	XMAS_FLAG			1 << 4
 #define	UDP_FLAG			1 << 5
-#define	MAX_FLAG			1 << 6
 
 #define	ACK_PORT			33255
 #define	UDP_PORT			35500
@@ -143,13 +143,21 @@ typedef struct				s_udppack
 	struct pseudo_header	psh;
 }							t_udppack;
 
+typedef struct				s_icmprespack
+{
+	struct ip				iph;
+	struct icmphdr			icmph;
+	struct ip				iphs;
+	struct udphdr			udph;
+}							t_icmprespack;
+
 void						arg_err(char *argname);
 int							binary_search(int *a, int item, int low, int high);
 void						binary_sort(int *a, int n);
 int 						remove_duplicates(int *arr, int n);
 void 						create_env(t_env *env);
 void 						set_defaults(t_env *env);
-void 						display_scans(uint8_t scan_list[SCAN_MAX], 
+void 						display_scans(uint8_t scan_list[SCAN_MAX],
 							uint8_t scancnt);
 void 						display_header(t_env *env);
 void						display_help(int32_t exitcode);
@@ -165,12 +173,13 @@ void						optimize_hosts(t_env *env);
 void						process_ip(char **argv, int argc,int i,t_env *env);
 int							ft_strisdigit(char *str);
 int							valid_port(char *port);
-void						add_ports_range(t_env *env, int start, int end);
+void						add_ports_range(t_env *env, char *split0,
+							char *split1);
 void						parse_port_part(t_env *env, char *part);
 void						parse_ports(t_env *env, char *ports);
 void						optimize_ports(t_params *params);
 void						process_port(char **argv, int argc, int i,
-							t_env *env);
+							t_env *enft_callocv);
 void 						process_scan(char **argv, int argc, int i,
 							t_env *env);
 void 						process_speedup(char **argv, int argc, int i,
@@ -209,8 +218,7 @@ uint8_t						handle_udp(struct udphdr *udp_header,
 							t_scanres *scan);
 uint8_t						handle_tcp(struct tcphdr *tcp_header,
 							t_scanres *scan);
-uint8_t						handle_icmp(struct icmphdr *icmp_header,
-							t_scanres *scan);
+uint8_t						handle_icmp(t_icmprespack *icmp, t_scanres *scan);
 void						send_scan(t_scanres *scan, in_addr_t source_ip,
 							int s);
 float						time_sub(struct timeval *out, struct timeval *in);
@@ -223,4 +231,7 @@ void						print_udpheader(struct udphdr *udph);
 void						display_data(t_scanres *results, int scannum,
 							t_params *params, struct timeval tstart);
 int							timeout(struct timeval st);
+void						*ft_realloc(void *ptr, size_t size);
+void						*malzero(size_t size);
+int							splitcnt(char **split);
 #endif

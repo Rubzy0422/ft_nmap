@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 	display_header(&env);
 	lst = init_scanlst(&env.params);
 	if (env.params.thread_cnt == 0 )
-		env.params.thread_cnt = THREADMAX;
+		env.params.thread_cnt = 1;
 	run_scans(lst, &env, tstart);
 	return EXIT_SUCCESS;
 }

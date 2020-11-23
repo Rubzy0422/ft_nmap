@@ -6,7 +6,7 @@
 /*   By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 14:14:06 by rcoetzer          #+#    #+#             */
-/*   Updated: 2020/11/12 22:04:07 by rcoetzer         ###   ########.fr       */
+/*   Updated: 2020/11/23 08:45:45 by rcoetzer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,16 @@ int valid_port(char *port)
 	return (1);
 }
 
-void add_ports_range(t_env *env, int start, int end)
+void add_ports_range(t_env *env, char *split0, char *split1)
 {
 	int i;
-
+	int start;
+	int end;
+	
+	start = ft_atoi(split0);
+	end = ft_atoi(split1);
+	if (!start || !end)
+		ft_error("Invalid Port range", EXIT_FAILURE);
 	if (start > end)
 	{
 		i = start;
@@ -55,16 +61,23 @@ void parse_port_part(t_env *env, char *part)
 	cnt = char_count(part, '-');
 	if (cnt == 0)
 	{
-		env->params.ports[env->params.portcnt++] = ft_atoi(part);
+		if (ft_strisdigit(part))
+			env->params.ports[env->params.portcnt++] = ft_atoi(part);
+		else 
+			ft_error("Invalid port format", EXIT_FAILURE);	
 		return;
 	}
 	if (!(splitted = ft_strsplit(part, '-')))
 		ft_error("ft_nmap: can't malloc splitted ports", EXIT_FAILURE);
-	if (!splitted[0] || cnt > 1 || !valid_port(splitted[0]) || (splitted[1] && !valid_port(splitted[1])))
+
+	if (splitcnt(splitted) == 2)
+	{
+		if (cnt > 1 || !valid_port(splitted[0]) || !valid_port(splitted[1]))
+			ft_error("Invalid port format", EXIT_FAILURE);
+		add_ports_range(env, splitted[0], splitted[1]);
+	}
+	else 
 		ft_error("Invalid port format", EXIT_FAILURE);
-	if (splitted[1])
-		add_ports_range(env, ft_atoi(splitted[0]), ft_atoi(splitted[1]));
-	
 	i= 0;
 	while(splitted[i])
 	{

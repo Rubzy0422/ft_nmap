@@ -6,7 +6,7 @@
 /*   By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 18:51:15 by rcoetzer          #+#    #+#             */
-/*   Updated: 2020/11/12 22:02:59 by rcoetzer         ###   ########.fr       */
+/*   Updated: 2020/11/20 16:23:41 by rcoetzer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void display_scans(uint8_t scan_list[SCAN_MAX], uint8_t scancnt)
 	uint8_t i;
 
 	i = 0;
-	printf("SCAN TODO:\t");
 	while(i < scancnt)
 	{
 		if (scan_list[i] == SYN_FLAG)

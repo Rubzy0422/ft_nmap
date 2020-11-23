@@ -6,7 +6,7 @@
 #    By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/04 12:15:51 by rcoetzer          #+#    #+#              #
-#    Updated: 2020/11/19 11:40:12 by rcoetzer         ###   ########.fr        #
+#    Updated: 2020/11/23 09:13:00 by rcoetzer         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,11 @@ SRCFILES	=	arg_err.c\
 				run_scans.c\
 				send_recv_pack.c\
 				display_data.c\
-				time.c
+				time.c\
+				ft_realloc.c\
+				debug_print.c\
+				malzero.c\
+				splitcnt.c
 
 SRCS		=	$(addprefix $(SRCDIR), $(SRCFILES))
 OBJS		=	$(addprefix $(OBJDIR), $(SRCFILES:.c=.o))
