@@ -6,7 +6,7 @@
 /*   By: rcoetzer <rcoetzer@student.wethinkcode.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/13 21:34:20 by rcoetzer          #+#    #+#             */
-/*   Updated: 2020/11/23 08:34:35 by rcoetzer         ###   ########.fr       */
+/*   Updated: 2020/11/23 09:24:08 by rcoetzer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,13 +165,8 @@ u_int8_t ProcessPacket(unsigned char* buffer, int protocall,
 	if (ft_strcmp(inet_ntoa(iphdr->ip_dst), inet_ntoa(tmp)))
 		return belong;
 
-	//if packet source is not one of our host
 	if (ft_strcmp(inet_ntoa(iphdr->ip_src), inet_ntoa(scan->host.sin_addr)))
-	{
-		printf("%s\t", inet_ntoa(iphdr->ip_src));
-		printf("%s\n", inet_ntoa(scan->host.sin_addr));
 		return belong;
-	}
 		
 	if (protocall == 0)
 		belong = handle_icmp((t_icmprespack *)(buffer + sizeof(struct ip)),
